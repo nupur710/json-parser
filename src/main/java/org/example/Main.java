@@ -21,7 +21,7 @@ public class Main {
             v= userInput.charAt(i);
             if(userInput.charAt(i) == '{')
                 token.add(String.valueOf(userInput.charAt(i)));
-            if(userInput.charAt(i) == ':')
+            if(userInput.charAt(i) == ':' || userInput.charAt(i) == ',')
                 token.add(String.valueOf(userInput.charAt(i)));
             if(userInput.charAt(i) == '"') {
                 token.add(String.valueOf(userInput.charAt(i)));
