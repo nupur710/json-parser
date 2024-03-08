@@ -6,5 +6,8 @@ public enum TokenTypes {
     SEMICOLON,
     COMMA,
     STRING_LITERAL,
-    NUMERIC_LITERAL
+    NUMERIC_LITERAL,
+    TRUE,
+    FALSE,
+    NULL
 }
