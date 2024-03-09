@@ -12,6 +12,10 @@ public class Lexer {
         StringBuilder stringBuilder = null;
         while (i < input.length()) {
             char c = input.charAt(i);
+            if(Character.isWhitespace(c)) {
+                i++;
+                continue;
+            }
             if (c == '{') {
                 tokens.add(new Token(TokenTypes.LEFT_CURLY_BRACKET, "{"));
                 i++;
@@ -33,16 +37,20 @@ public class Lexer {
                 continue;
             }
             if (Character.isDigit(c)) {
-                number += number * 10;
+                number= number*10 + Character.getNumericValue(c);
                 i++;
-                continue;
-            }
-            if (number != 0) {
-                tokens.add(new Token(TokenTypes.NUMERIC_LITERAL, String.valueOf(number)));
+                if (Character.isDigit(input.charAt(i)))  { //we cannot use Character.isDigit(c+1) here because that appends 1 to c --> if c is 2 --> c+1= 21
+                    continue;
+                }
+                else {
+                    tokens.add(new Token(TokenTypes.NUMERIC_LITERAL, String.valueOf(number)));
+                    number= 0;
+                    continue;
+                }
             }
             if (c == '"') {
-                int x = 0;
                 i++;
+                int x= i;
                 while ((input).charAt(i) != '"') {
 //logic1                    stringBuilder.append(c);
                     i++; //logic2
@@ -84,105 +92,4 @@ public class Lexer {
             System.out.println("val " +to.getValue());
         }
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//package org.example;
-//
-//import java.io.BufferedReader;
-//import java.io.FileReader;
-//import java.io.InputStream;
-//import java.util.ArrayList;
-//import java.util.LinkedList;
-//import java.util.Scanner;
-//
-///***
-// * Tokenize json string input. Worst case time complexity is
-// * O(n*2); needs to be improved
-// */
-//public class Lexer {
-//
-//
-//
-//    public void lookahead() {
-//        BufferedReader br= new BufferedReader(new FileReader())
-//    }
-//
-//
-//    private ArrayList tokenize(String userInput) {
-//        int constructNo= 0;
-//        ArrayList<String> token= new ArrayList<>();
-//        var builder= new StringBuilder();
-//        var x= new StringBuilder();
-//        char v;
-//        char m= 0;
-//        for(int i= 0; i<userInput.length(); i++) {
-//            v= userInput.charAt(i);
-//            if(userInput.charAt(i) == '{')
-//                token.add(String.valueOf(userInput.charAt(i)));
-//            if(userInput.charAt(i) == ':' || userInput.charAt(i) == ',')
-//                token.add(String.valueOf(userInput.charAt(i)));
-//            if(userInput.charAt(i) == '"') {
-//                token.add(String.valueOf(userInput.charAt(i)));
-//                for(int j= i+1; j<userInput.length(); j++) {
-//                    i= j;
-//                    if(userInput.charAt(j) == '"') {
-//                        m= userInput.charAt(j);
-//                        break;
-//                    }
-//
-//                    x.append(userInput.charAt(j));
-//                }
-//                if(x!= null || !x.equals("")) {
-//                    token.add(String.valueOf(x));
-//                    x.setLength(0);
-//                    token.add(String.valueOf(m));
-//                }
-//            }
-//
-//            if(Character.isDigit(userInput.charAt(i))) {
-//                constructNo= constructNo*10 + Character.getNumericValue(userInput.charAt(i));
-//                continue;
-//            }
-//            if(constructNo != 0) {
-//                token.add(String.valueOf(constructNo));
-//                constructNo = 0;
-//            }
-//
-//            if(userInput.charAt(i) == '}') {
-//                token.add(String.valueOf(userInput.charAt(i)));
-//            }
-//        }
-//        return token;
-//    }
-//
-//
-//    public static void main(String[] args) {
-//        Scanner sc= new Scanner(System.in);
-//        String userInput= sc.nextLine();
-//        Lexer lexer= new Lexer();
-//        lexer.tokenize(userInput);
-//    }
-//
-//
-//}
