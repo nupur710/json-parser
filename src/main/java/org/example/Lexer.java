@@ -89,7 +89,7 @@ public class Lexer {
         Lexer lexer= new Lexer();
         List<Token> t= lexer.tokenizer(ip);
         for(Token to : t) {
-            System.out.println("val " +to.getValue());
+            System.out.println(to.getValue());
         }
     }
 }
