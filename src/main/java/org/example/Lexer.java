@@ -1,13 +1,11 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Lexer {
 
-    public List<Token> tokenizer(String input) {
-        ArrayList<Token> tokens = new ArrayList<>();
+    public Queue<Token> tokenizer(String input) {
+        Queue<Token> tokens = new LinkedList<>();
         int i = 0, number = 0;
         StringBuilder stringBuilder = null;
         while (i < input.length()) {
@@ -80,14 +78,23 @@ public class Lexer {
                 i += 4;
                 continue;
             }
+
+            else {
+                //throw error
+            }
         } return tokens;
+    }
+
+    public static Token peekNext(Queue<Token> tokens) {
+        if(tokens!= null) return tokens.peek();
+        return null;
     }
 
     public static void main(String[] args) {
         Scanner sc= new Scanner(System.in);
         String ip= sc.nextLine();
         Lexer lexer= new Lexer();
-        List<Token> t= lexer.tokenizer(ip);
+        Queue<Token> t= lexer.tokenizer(ip);
         for(Token to : t) {
             System.out.println(to.getValue());
         }
