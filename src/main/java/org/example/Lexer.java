@@ -61,7 +61,7 @@ public class Lexer {
                 //logic1               tokens.add(new Token(TokenTypes.STRING_LITERAL, stringBuilder.toString()));
             }
             if (c == 'f' && input.charAt(i + 1) == 'a' && input.charAt(i + 2) == 'l' && input
-                    .charAt(i + 3) == 's' && input.charAt(4) == 'e') {
+                    .charAt(i + 3) == 's' && input.charAt(i+4) == 'e') {
                 tokens.add(new Token(TokenTypes.TRUE, "false"));
                 i += 5;
                 continue;
