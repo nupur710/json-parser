@@ -1,7 +1,7 @@
 package org.example;
 
 public class Token {
-    private TokenTypes tokenTypes;
+    public TokenTypes tokenTypes;
     private String value;
     public Token(TokenTypes tokenTypes, String value) {
         this.tokenTypes= tokenTypes;

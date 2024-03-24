@@ -9,5 +9,6 @@ public enum TokenTypes {
     NUMERIC_LITERAL,
     TRUE,
     FALSE,
-    NULL
+    NULL,
+    EOF
 }
