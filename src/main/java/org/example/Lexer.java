@@ -24,10 +24,45 @@ public class Lexer {
                 return new Token(TokenTypes.LEFT_CURLY_BRACKET, "{");
             } case '}' -> {
                 return new Token(TokenTypes.RIGHT_CURLY_BRACKET, "}");
+            } case ':' -> {
+                return new Token(TokenTypes.SEMICOLON, ":");
+            } case ',' -> {
+                return new Token(TokenTypes.COMMA, ",");
+            } case '[' -> {
+                return new Token(TokenTypes.OPEN_ARRAY, "[");
+            } case ']' -> {
+                return new Token(TokenTypes.CLOSE_ARRAY, "]");
+            } case '"' -> {
+                String a= constructString();
+                return new Token(TokenTypes.STRING_LITERAL, a);
+            } case '0','1','2','3','4','5','6','7','8','9' -> {
+                String number= constructNumber(ch);
+                System.out.println(number);
             }
             default -> throw new IOException("Invalid character");
         }
         return null;
+    }
+
+    private String constructNumber(Character ch) throws IOException {
+        var number= new StringBuilder();
+        number.append(ch);
+        char x= this.peekNext();
+        while(Character.isDigit(x)) {
+            number.append(x);
+            x= this.peekNext();
+        }
+        return number.toString();
+    }
+
+    private String constructString() throws IOException {
+        var string= new StringBuilder();
+        char x= this.peekNext();
+        while((x)!='"') {
+            string.append(x);
+            x= this.peekNext();
+        }
+        return string.toString();
     }
 
     private void handleWhitespace(Character ch) throws IOException {
