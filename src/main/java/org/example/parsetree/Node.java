@@ -1,4 +1,4 @@
 package org.example.parsetree;
 
-public class JValue {
+public interface Node {
 }
