@@ -9,8 +9,7 @@ public enum TokenTypes {
     COMMA,
     STRING_LITERAL,
     NUMERIC_LITERAL,
-    TRUE,
-    FALSE,
+    BOOLEAN,
     NULL,
     EOF
 }
