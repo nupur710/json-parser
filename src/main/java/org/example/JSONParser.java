@@ -1,8 +1,9 @@
 package org.example;
 
+import org.example.parsetree.*;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,55 +17,63 @@ public class JSONParser {
         this.lexer= new Lexer(reader);
     }
 
-    public ASTNode parse() throws IOException {
+    private String token() throws IOException {
+        return lexer.getToken().getValue();
+    }
+
+    public Node parse() throws IOException {
         return parseObject();
     }
 
-    private ASTNode parseObject() throws IOException {
-        if(lexer.peekNext() != '{') { //first character is not opening bracket
+    private Node parseObject() throws IOException {
+        if(token() != "{") { //first character is not opening bracket
             //throw exception
         }
-        Map<String, ASTNode> keyValue= new HashMap<>();
-        while(lexer.peekNext() != '}') {
+        Map<String, Node> keyValue= new HashMap<>();
+        while(token() != "}") {
+            //should lexer.peekNext() != '"" throw error?
             String key= lexer.constructString();
-            if(lexer.peekNext() != ':') {
+            if(token() != ":") {
                 //throw error
             }
-            ASTNode value= parseValue();
+            Node value= parseValue();
             keyValue.put(key, value);
-            if(lexer.peekNext() == ',') {
-                lexer.peekNext();
+            if(token() == ",") {
+                token();
             }
         }
         return new ObjectNode(keyValue);
     }
 
-    private ASTNode parseValue() throws IOException {
-        char c= lexer.peekNext();
+    private Node parseValue() throws IOException {
+        char c= token().charAt(0);
+        if(Character.isWhitespace(c)) {
+            c = token().charAt(0);
+            //parseValue();
+        }
         if(c == '{') return parseObject();
         else if(c == '[') return parseArray();
         else if(c == '"') return new StringNode(lexer.constructString());
         else if(Character.isDigit(c)) return new NumberNode(lexer.constructNumber(c));
         else if(c == 't') return new BooleanNode(lexer.checkTrue());
         else if(c == 'f') return new BooleanNode(lexer.checkFalse());
-        else if(c == 't') return new NullNode(lexer.checkNull());
-        //else //throw exception;
-        return null;
+        else if(c == 'n') return new NullNode(lexer.checkNull());
+        else throw new IOException("Invalid char found"); //change
     }
 
-    private ASTNode parseArray() throws IOException {
-        if(lexer.peekNext() != '[') {
+    private Node parseArray() throws IOException {
+        if(token() != "[") {
             //throw exception
         }
-        List<ASTNode> list= new ArrayList<>();
-        while(lexer.peekNext() != ']') {
-            ASTNode value= parseValue();
+        List<Node> list= new ArrayList<>();
+        while(token() != "]") {
+            Node value= parseValue();
             list.add(value);
-            if(lexer.peekNext() == ',') {
-                lexer.peekNext();
+            if(token() == ",") {
+                token();
             }
         }
-        lexer.peekNext();
+        token();
         return new ArrayNode(list);
     }
 
