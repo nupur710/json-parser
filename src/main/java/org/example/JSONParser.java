@@ -30,9 +30,11 @@ public class JSONParser {
             //throw exception
         }
         Map<String, Node> keyValue= new HashMap<>();
-        while(token() != "}") {
+        String key;
+        while((key=token()) != "}") {
+            String nextToken= token(); //should we use this instead
             //should lexer.peekNext() != '"" throw error?
-            String key= lexer.constructString();
+            //String key= token();
             if(token() != ":") {
                 //throw error
             }
@@ -46,18 +48,20 @@ public class JSONParser {
     }
 
     private Node parseValue() throws IOException {
-        char c= token().charAt(0);
-        if(Character.isWhitespace(c)) {
-            c = token().charAt(0);
+        Token token= lexer.getToken();
+        TokenTypes c= token.getTokenTypes();
+        String str= token.getValue();
+//        if(Character.isWhitespace(c)) {
+//            c = token().charAt(0);
             //parseValue();
-        }
-        if(c == '{') return parseObject();
-        else if(c == '[') return parseArray();
-        else if(c == '"') return new StringNode(lexer.constructString());
-        else if(Character.isDigit(c)) return new NumberNode(lexer.constructNumber(c));
-        else if(c == 't') return new BooleanNode(lexer.checkTrue());
-        else if(c == 'f') return new BooleanNode(lexer.checkFalse());
-        else if(c == 'n') return new NullNode(lexer.checkNull());
+//        }
+        if(c == TokenTypes.LEFT_CURLY_BRACKET) return parseObject();
+        else if(c == TokenTypes.OPEN_ARRAY) return parseArray();
+        else if(c == TokenTypes.STRING_LITERAL) return new StringNode(str);
+        else if(c == TokenTypes.NUMERIC_LITERAL) return new NumberNode(str);
+        else if(c == TokenTypes.BOOLEAN) return new BooleanNode(str); //needs fixing
+        else if(c == TokenTypes.BOOLEAN) return new BooleanNode(str); //needs fixing
+        else if(c == TokenTypes.NULL) return new NullNode(str);
         else throw new IOException("Invalid char found"); //change
     }
 
