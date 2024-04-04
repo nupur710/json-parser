@@ -1,8 +1,8 @@
 package org.example;
 
 public class Token {
-    public TokenTypes tokenTypes;
-    private String value;
+    static public TokenTypes tokenTypes;
+    static private String value;
     public Token(TokenTypes tokenTypes, String value) {
         this.tokenTypes= tokenTypes;
         this.value= value;
@@ -16,7 +16,7 @@ public class Token {
         this.tokenTypes = tokenTypes;
     }
 
-    public String getValue() {
+    static public String getValue() {
         return value;
     }
 
