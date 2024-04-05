@@ -25,6 +25,9 @@ public class Lexer {
             ch= handleWhitespace(ch);
         }
         switch (ch) {
+//            case ' ', '\n', '\r', '\t' -> {
+//                ch= handleWhitespace(ch);
+//            }
             case '{' -> {
                 return new Token(TokenTypes.LEFT_CURLY_BRACKET, "{");
             }
@@ -112,7 +115,7 @@ public class Lexer {
 
     char handleWhitespace(Character ch) throws IOException {
         while (ch == '\n' || ch == '\r' || ch == '\t' || ch == ' ') {
-            return this.peekNext();
+            ch= this.peekNext();
         } return ch;
     }
 
