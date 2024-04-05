@@ -32,7 +32,7 @@ public class JSONParser {
         Map<String, Node> keyValue= new HashMap<>();
         String key;
         while((key=token()) != "}") {
-            String nextToken= token(); //should we use this instead
+            //String nextToken= token(); //should we use this instead
             //should lexer.peekNext() != '"" throw error?
             //String key= token();
             if(token() != ":") {
@@ -41,8 +41,10 @@ public class JSONParser {
             Node value= parseValue();
             keyValue.put(key, value);
             if(token() == ",") {
-                token();
-            }
+                continue;
+                //token();
+                //parseObject();
+            } else break;
         }
         return new ObjectNode(keyValue);
     }
