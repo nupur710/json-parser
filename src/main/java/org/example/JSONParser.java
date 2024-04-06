@@ -42,6 +42,7 @@ public class JSONParser {
             keyValue.put(key, value);
             if(token() == ",") {
                 continue;
+//                throw new IOException("Invalid");
                 //token();
                 //parseObject();
             } else break;
