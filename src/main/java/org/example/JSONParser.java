@@ -58,8 +58,13 @@ public class JSONParser {
 //            c = token().charAt(0);
             //parseValue();
 //        }
-        if(c == TokenTypes.LEFT_CURLY_BRACKET) return parseObject();
-        else if(c == TokenTypes.OPEN_ARRAY) return parseArray();
+        if(c == TokenTypes.LEFT_CURLY_BRACKET) {
+            lexer.buffer.add(str.charAt(0));
+            return parseObject(); }
+        else if(c == TokenTypes.OPEN_ARRAY) {
+            lexer.buffer.add(str.charAt(0));
+            return parseArray();
+        }
         else if(c == TokenTypes.STRING_LITERAL) return new StringNode(str);
         else if(c == TokenTypes.NUMERIC_LITERAL) return new NumberNode(str);
         else if(c == TokenTypes.BOOLEAN) return new BooleanNode(str); //needs fixing
@@ -80,7 +85,7 @@ public class JSONParser {
                 token();
             }
         }
-        token();
+//        token();
         return new ArrayNode(list);
     }
 

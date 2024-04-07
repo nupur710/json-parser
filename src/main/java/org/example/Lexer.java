@@ -8,7 +8,7 @@ import java.util.*;
 public class Lexer {
 
     private InputStreamReader reader;
-    private Queue<Character> buffer;
+    Queue<Character> buffer;
 
     public Lexer(InputStreamReader reader) {
         this.reader = reader;
@@ -128,6 +128,9 @@ public class Lexer {
             return buffer.poll();
         } else {
             char ch = (char) reader.read();
+            if(ch == -1) {
+                return null;
+            }
             buffer.add(ch);
             return buffer.poll();
         }
