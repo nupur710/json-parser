@@ -103,7 +103,7 @@ public class Lexer {
             x = this.peekNext();
             l=x;
         }
-        buffer.add(l);
+        buffer.add(l); //needs to be handled for arrays (one digit no.)
         return number.toString();
     }
 

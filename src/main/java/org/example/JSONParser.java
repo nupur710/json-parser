@@ -12,6 +12,7 @@ import java.util.Map;
 public class JSONParser {
 
     private Lexer lexer;
+    private List<Node> list= new ArrayList<>();
 
     public JSONParser(InputStreamReader reader) {
         this.lexer= new Lexer(reader);
@@ -77,16 +78,30 @@ public class JSONParser {
         if(token() != "[") {
             //throw exception
         }
-        List<Node> list= new ArrayList<>();
-        while(token() != "]") {
-            Node value= parseValue();
+
+        String no;
+        while((no=token()) != "]") {
+            Node value= new NumberNode(no);
             list.add(value);
             if(token() == ",") {
-                token();
-            }
+                //token();
+                parseArrayValues();
+            } else break;
         }
 //        token();
         return new ArrayNode(list);
+    }
+
+    List<Node> parseArrayValues() throws IOException {
+        String arrayValue= token();
+        Node value= new NumberNode(arrayValue);
+        list.add(value);
+        String next;
+        while((next=token()) == ",") {
+            parseArrayValues();
+        }
+        if(next == "]")  lexer.buffer.add(next.charAt(0));
+        return list;
     }
 
 
