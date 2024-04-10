@@ -81,7 +81,7 @@ public class JSONParser {
 
         String no;
         while((no=token()) != "]") {
-            Node value= new NumberNode(no);
+            Node value= new ArrayValueNode(no);
             list.add(value);
             if(token() == ",") {
                 //token();
@@ -94,7 +94,7 @@ public class JSONParser {
 
     List<Node> parseArrayValues() throws IOException {
         String arrayValue= token();
-        Node value= new NumberNode(arrayValue);
+        Node value= new ArrayValueNode(arrayValue);
         list.add(value);
         String next;
         while((next=token()) == ",") {
