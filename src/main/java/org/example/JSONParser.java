@@ -18,8 +18,8 @@ public class JSONParser {
         this.lexer= new Lexer(reader);
     }
 
-    private String token() throws IOException {
-        return lexer.getToken().getValue();
+    private Token token() throws IOException {
+        return lexer.getToken();
     }
 
     public Node parse() throws IOException {
@@ -27,21 +27,21 @@ public class JSONParser {
     }
 
     private Node parseObject() throws IOException {
-        if(token() != "{") { //first character is not opening bracket
-            //throw exception
+        if(token().getValue() != "{") { //first character is not opening bracket
+            throw new IOException("Illegal Character");
         }
         Map<String, Node> keyValue= new HashMap<>();
         String key;
-        while((key=token()) != "}") {
+        while((key=token().getValue()) != "}") {
             //String nextToken= token(); //should we use this instead
             //should lexer.peekNext() != '"" throw error?
             //String key= token();
-            if(token() != ":") {
-                //throw error
+            if(token().getValue() != ":") {
+                throw new IOException("Illegal Character");
             }
             Node value= parseValue();
             keyValue.put(key, value);
-            if(token() == ",") {
+            if(token().getValue() == ",") {
                 continue;
 //                throw new IOException("Invalid");
                 //token();
@@ -75,32 +75,36 @@ public class JSONParser {
     }
 
     private Node parseArray() throws IOException {
-        if(token() != "[") {
-            //throw exception
+        if(token().getTokenTypes() != TokenTypes.OPEN_ARRAY) {
+            throw new IOException("Illegal Character");
         }
 
-        String no;
-        while((no=token()) != "]") {
-            Node value= new ArrayValueNode(no);
+        Token no= token();
+        while((no.getTokenTypes()) != TokenTypes.CLOSE_ARRAY) {
+            Node value= new ArrayValueNode(no.getValue());
             list.add(value);
-            if(token() == ",") {
+            if(token().getTokenTypes() == TokenTypes.COMMA) {
                 //token();
                 parseArrayValues();
-            } else break;
+            }
+            else if(token().getTokenTypes() == TokenTypes.STRING_LITERAL) {
+
+            }
+            else break;
         }
 //        token();
         return new ArrayNode(list);
     }
 
     List<Node> parseArrayValues() throws IOException {
-        String arrayValue= token();
+        String arrayValue= token().getValue();
         Node value= new ArrayValueNode(arrayValue);
         list.add(value);
-        String next;
-        while((next=token()) == ",") {
+        Token next= token();
+        while((next.getTokenTypes()) == TokenTypes.COMMA) {
             parseArrayValues();
         }
-        if(next == "]")  lexer.buffer.add(next.charAt(0));
+        if(next.getTokenTypes() == TokenTypes.CLOSE_ARRAY)  lexer.buffer.add(next.getValue().charAt(0));
         return list;
     }
 
