@@ -1,8 +1,7 @@
-package org.example;
+package org.jsonparser;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PushbackReader;
 import java.util.*;
 
 public class Lexer {
@@ -103,8 +102,15 @@ public class Lexer {
             x = this.peekNext();
             l=x;
         }
-        buffer.add(l); //needs to be handled for arrays (one digit no.)
-        return number.toString();
+//        char c= toString().charAt(0);
+//        if(c)
+        int n= Integer.parseInt(number.toString());
+         if(n >= 0 && n <= 9) {
+             buffer.add(x);
+         } else {
+             buffer.add(l);
+         }
+             return number.toString();
     }
 
     String constructString() throws IOException {
