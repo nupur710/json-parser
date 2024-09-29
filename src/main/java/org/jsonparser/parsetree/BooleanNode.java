@@ -1,4 +1,4 @@
-package org.example.parsetree;
+package org.jsonparser.parsetree;
 
 public class BooleanNode implements Node{
 

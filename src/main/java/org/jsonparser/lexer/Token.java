@@ -1,4 +1,4 @@
-package org.example;
+package org.jsonparser.lexer;
 
 public class Token {
     static public TokenTypes tokenTypes;

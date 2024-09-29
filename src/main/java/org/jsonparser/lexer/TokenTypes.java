@@ -1,4 +1,4 @@
-package org.example;
+package org.jsonparser.lexer;
 
 public enum TokenTypes {
     LEFT_CURLY_BRACKET,

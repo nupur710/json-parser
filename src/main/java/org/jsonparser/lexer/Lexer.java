@@ -1,4 +1,4 @@
-package org.jsonparser;
+package org.jsonparser.lexer;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,7 +7,7 @@ import java.util.*;
 public class Lexer {
 
     private InputStreamReader reader;
-    Queue<Character> buffer;
+    public Queue<Character> buffer;
 
     public Lexer(InputStreamReader reader) {
         this.reader = reader;

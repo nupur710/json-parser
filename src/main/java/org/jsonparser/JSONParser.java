@@ -1,6 +1,9 @@
-package org.example;
+package org.jsonparser;
 
-import org.example.parsetree.*;
+import org.jsonparser.lexer.Lexer;
+import org.jsonparser.lexer.Token;
+import org.jsonparser.lexer.TokenTypes;
+import org.jsonparser.parsetree.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,9 +36,6 @@ public class JSONParser {
         Map<String, Node> keyValue= new HashMap<>();
         String key;
         while((key=token().getValue()) != "}") {
-            //String nextToken= token(); //should we use this instead
-            //should lexer.peekNext() != '"" throw error?
-            //String key= token();
             if(token().getValue() != ":") {
                 throw new IOException("Illegal Character");
             }
@@ -43,9 +43,6 @@ public class JSONParser {
             keyValue.put(key, value);
             if(token().getValue() == ",") {
                 continue;
-//                throw new IOException("Invalid");
-                //token();
-                //parseObject();
             } else break;
         }
         return new ObjectNode(keyValue);
@@ -55,10 +52,6 @@ public class JSONParser {
         Token token= lexer.getToken();
         TokenTypes c= token.getTokenTypes();
         String str= token.getValue();
-//        if(Character.isWhitespace(c)) {
-//            c = token().charAt(0);
-            //parseValue();
-//        }
         if(c == TokenTypes.LEFT_CURLY_BRACKET) {
             lexer.buffer.add(str.charAt(0));
             return parseObject(); }
@@ -73,7 +66,6 @@ public class JSONParser {
         else if(c == TokenTypes.NULL) return new NullNode(str);
         else throw new IOException("Invalid char found"); //change
     }
-
     private Node parseArray() throws IOException {
         if(token().getTokenTypes() != TokenTypes.OPEN_ARRAY) {
             throw new IOException("Illegal Character");
@@ -92,7 +84,7 @@ public class JSONParser {
             }
             else break;
         }
-//        token();
+        //add no back to buffer here
         return new ArrayNode(list);
     }
 
@@ -104,9 +96,7 @@ public class JSONParser {
         while((next.getTokenTypes()) == TokenTypes.COMMA) {
             parseArrayValues();
         }
-        if(next.getTokenTypes() == TokenTypes.CLOSE_ARRAY)  lexer.buffer.add(next.getValue().charAt(0));
+        if(next.getTokenTypes() != TokenTypes.CLOSE_ARRAY)  throw new IOException("Illegal Exception");
         return list;
     }
-
-
 }
