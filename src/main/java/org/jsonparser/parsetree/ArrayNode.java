@@ -8,4 +8,9 @@ public class ArrayNode implements Node{
     public ArrayNode(List<Node> list) {
         this.list= list;
     }
+
+    @Override
+    public List<Node> getNode() {
+        return list;
+    }
 }

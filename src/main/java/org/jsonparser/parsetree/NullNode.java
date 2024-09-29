@@ -5,4 +5,9 @@ public class NullNode implements Node{
     public NullNode(String nullVal) {
         this.nullVal= nullVal;
     }
+
+    @Override
+    public String getNode() {
+        return null;
+    }
 }

@@ -8,4 +8,8 @@ public class BooleanNode implements Node{
         this.bool= bool;
     }
 
+    @Override
+    public String getNode() {
+        return bool;
+    }
 }

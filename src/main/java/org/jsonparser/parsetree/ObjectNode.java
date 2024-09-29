@@ -8,4 +8,7 @@ public class ObjectNode implements Node {
     public ObjectNode(Map<String, Node> map) {
         this.map= map;
     }
+    public Map<String, Node> getNode() {
+        return map;
+    }
 }
