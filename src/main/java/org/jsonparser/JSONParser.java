@@ -70,21 +70,18 @@ public class JSONParser {
         if(token().getTokenTypes() != TokenTypes.OPEN_ARRAY) {
             throw new IOException("Illegal Character");
         }
-
         Token no= token();
         while((no.getTokenTypes()) != TokenTypes.CLOSE_ARRAY) {
             Node value= new ArrayValueNode(no.getValue());
             list.add(value);
             if(token().getTokenTypes() == TokenTypes.COMMA) {
-                //token();
                 parseArrayValues();
             }
             else if(token().getTokenTypes() == TokenTypes.STRING_LITERAL) {
-
             }
             else break;
         }
-        //add no back to buffer here
+
         return new ArrayNode(list);
     }
 
