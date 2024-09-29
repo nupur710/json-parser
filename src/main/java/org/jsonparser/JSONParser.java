@@ -15,7 +15,7 @@ import java.util.Map;
 public class JSONParser {
 
     private Lexer lexer;
-    private List<Node> list= new ArrayList<>();
+
 
     public JSONParser(InputStreamReader reader) {
         this.lexer= new Lexer(reader);
@@ -67,15 +67,19 @@ public class JSONParser {
         else throw new IOException("Invalid char found"); //change
     }
     private Node parseArray() throws IOException {
+        List<Node> list= new ArrayList<>();
         if(token().getTokenTypes() != TokenTypes.OPEN_ARRAY) {
             throw new IOException("Illegal Character");
         }
         Token no= token();
+        TokenTypes noType= no.getTokenTypes();
         while((no.getTokenTypes()) != TokenTypes.CLOSE_ARRAY) {
-            Node value= new ArrayValueNode(no.getValue());
+            Node value= null;
+            if(noType== TokenTypes.STRING_LITERAL) value= new StringNode(no.getValue());
+            else if(noType== TokenTypes.NUMERIC_LITERAL) value= new NumberNode(no.getValue());
             list.add(value);
             if(token().getTokenTypes() == TokenTypes.COMMA) {
-                parseArrayValues();
+                parseArrayValues(list);
             }
             else if(token().getTokenTypes() == TokenTypes.STRING_LITERAL) {
             }
@@ -85,13 +89,20 @@ public class JSONParser {
         return new ArrayNode(list);
     }
 
-    List<Node> parseArrayValues() throws IOException {
-        String arrayValue= token().getValue();
-        Node value= new ArrayValueNode(arrayValue);
+    List<Node> parseArrayValues(List<Node> list) throws IOException {
+        Token val= token();
+        TokenTypes valType= val.getTokenTypes();
+        String arrayValue= val.getValue();
+        Node value= null;
+        if(valType== TokenTypes.STRING_LITERAL) {
+            value = new StringNode(arrayValue);
+        } else if(valType== TokenTypes.NUMERIC_LITERAL) {
+            value= new NumberNode(arrayValue);
+        }
         list.add(value);
         Token next= token();
         while((next.getTokenTypes()) == TokenTypes.COMMA) {
-            parseArrayValues();
+            parseArrayValues(list);
         }
         if(next.getTokenTypes() != TokenTypes.CLOSE_ARRAY)  throw new IOException("Illegal Exception");
         return list;
