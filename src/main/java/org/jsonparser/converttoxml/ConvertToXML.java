@@ -2,17 +2,21 @@ package org.jsonparser.converttoxml;
 
 import org.jsonparser.parsetree.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 public class ConvertToXML {
     private StringBuilder xml= new StringBuilder();
     private int i= 0;
-    public void exportToXml(Node json) {
+    public String exportToXml(Node json) {
         xml.append("<Object>");
         parseObjectNode(json);
         xml.append("\n</Object>");
-        System.out.println(xml.toString());
+        return xml.toString();
     }
 
     private void buildXML(String key, Node value) {
@@ -127,7 +131,7 @@ public class ConvertToXML {
         xml.append("</Array>");
         xml.append("\n");
         appendTabCharacters(j-1);
-        xml.append("<"+key+"/>");
+        xml.append("</"+key+">");
 
         xml.append("\n");
         //appendTabCharacters();
@@ -167,6 +171,14 @@ public class ConvertToXML {
     private void appendTabCharacters(int x) {
         for(int j= 0; j< x; j++){ //remove equal to
             xml.append("\t");
+        }
+    }
+
+    public void writeToFile(String str)  {
+        try(PrintWriter writer= new PrintWriter("XMLOutput.xml")) {
+            writer.println(str);
+        } catch (FileNotFoundException e) {
+            System.err.println("FileNotFoundError: " + e.getMessage());
         }
     }
 }

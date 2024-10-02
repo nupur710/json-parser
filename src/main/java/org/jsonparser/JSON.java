@@ -1,6 +1,7 @@
 package org.jsonparser;
 
 import org.jsonparser.converttoxml.ConvertToXML;
+import org.jsonparser.converttoxml.ConvertToXml2;
 import org.jsonparser.parsetree.Node;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class JSON {
         Node ab= parser.parse();
         System.out.println("\nSuccessful parsing!");
         ConvertToXML convertToXML= new ConvertToXML();
-        convertToXML.exportToXML(ab);
+        String str= convertToXML.exportToXml(ab);
+        convertToXML.writeToFile(str);
     }
 }
